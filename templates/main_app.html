@@ -10,14 +10,18 @@
 <body>
 
 {% verbatim %}
-    <div class="container" id ="messages">
-        <div class="container">
-            {{ messages }}
-            <div class="btn btn-success btn lg">
-                Прочитать
-            </div>
-        </div>
-    </div>
+<div class="container" id="messages">
+    <ul>
+    <li
+      is="message-item"
+      v-for="(message, index) in messages"
+      v-bind:key="message.id"
+      v-bind:title="message.msg_text"
+      v-bind:date="message.msg_date"
+      v-on:remove="markread(message.id)"
+    ></li>
+  </ul>
+</div>
 {% endverbatim %}
 
 <script src="/static/app.js"></script>

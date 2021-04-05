@@ -1,13 +1,37 @@
-var messages = new Vue({
+Vue.component('message-item', {
+  template: '\
+    <li>\
+      {{ title }}\
+      <button v-on:click="$emit(\'remove\')">Прочитано</button>\
+    </li>\
+  ',
+  props: ['title', 'date', 'key']
+})
+
+new Vue({
     el: '#messages',
     data: {
         messages: []
     },
     created: function () {
-        axios.get('api/get_messages')
+        const vm = this;
+        axios.get('api/get_messages?last_id=0')
             .then(function (response){
-                console.log(response.data)
-                this.messages = response.data
+                vm.messages = response.data;
             })
+        setInterval(function () {vm.upd()}, 10000)
+        },
+    methods:{
+        markread: function (id){
+            axios.get('api/mark_read?id=' + id)
+        },
+        upd: function (){
+            const vm = this;
+            axios.get('api/get_messages?last_id=' + vm.messages[vm.messages.length-1].id)
+                .then(function (response){
+                    response.data.splice(0, 1)
+                    vm.messages = vm.messages.concat(response.data)
+                })
+        }
     }
 })

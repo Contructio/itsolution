@@ -15,17 +15,11 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from rest_framework.routers import SimpleRouter
-
-from itsolution.views import messageView
-
-router = SimpleRouter()
-
-router.register('api/get_messages', messageView)
+from itsolution.views import messageView, mark_read
 
 urlpatterns = [
     path('', include('itsolution.urls')),
     path('admin/', admin.site.urls),
+    path('api/mark_read', mark_read),
+    path('api/get_messages', messageView.as_view())
 ]
-
-urlpatterns += router.urls
