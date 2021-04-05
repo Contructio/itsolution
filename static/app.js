@@ -22,8 +22,10 @@ new Vue({
         setInterval(function () {vm.upd()}, 10000)
         },
     methods:{
-        markread: function (id){
+        markread: function (index, id){
+            const vm = this
             axios.get('api/mark_read?id=' + id)
+            vm.messages.splice(index, 1)
         },
         upd: function (){
             const vm = this;
